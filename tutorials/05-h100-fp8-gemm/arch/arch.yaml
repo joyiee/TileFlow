@@ -1,0 +1,57 @@
+architecture:
+  version: 0.2
+
+  subtree:
+  - name: GPU
+    local:
+    - name: HBM
+      class: DRAM
+      attributes:
+        word-bits: 8
+        block-size: 32
+        sizeKB: 83886080
+        read_bandwidth: 1564
+        write_bandwidth: 1564
+    subtree:
+    - name: L2
+      local:
+      - name: L2Cache
+        class: SRAM
+        attributes:
+          word-bits: 8
+          block-size: 32
+          sizeKB: 51200
+          read_bandwidth: 9500
+          write_bandwidth: 2500
+      subtree:
+      - name: SM
+        local:
+        - name: SharedMemory[0..255]
+          class: SRAM
+          attributes:
+            meshX: 16
+            meshY: 16
+            word-bits: 8
+            block-size: 32
+            sizeKB: 228
+            read_bandwidth: 64
+            write_bandwidth: 64
+        subtree:
+        - name: PE
+          local:
+          - name: RegFile[0..1048575]
+            class: regfile
+            attributes:
+              meshX: 1024
+              meshY: 1024
+              depth: 32
+              block-size: 4
+              word-bits: 8
+              read_bandwidth: 2
+              write_bandwidth: 2
+          - name: mac[0..1048575]
+            class: intmac
+            attributes:
+              meshX: 1024
+              meshY: 1024
+              word-bits: 8

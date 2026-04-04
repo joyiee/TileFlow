@@ -1,0 +1,42 @@
+mapping:
+  node-type: Tile
+  type: temporal
+  factors: M=1 N=1 K=KO
+  permutation: KMN
+  target: HBM
+  subtree:
+  - node-type: Tile
+    type: temporal
+    factors: M=1 N=1 K=1
+    permutation: KMN
+    target: L2Cache
+    subtree:
+    - node-type: Tile
+      type: spatial
+      factors: M=MO N=NO
+      permutation: MN
+      split: 1
+      target: L2Cache
+      subtree:
+      - node-type: Tile
+        type: temporal
+        factors: M=2 N=2 K=2
+        permutation: KMN
+        target: SharedMemory
+        subtree:
+        - node-type: Tile
+          type: spatial
+          factors: M=64 N=64
+          permutation: MN
+          split: 1
+          target: SharedMemory
+          multicast: true
+          subtree:
+          - node-type: Tile
+            type: temporal
+            factors: M=1 N=1 K=32
+            permutation: KMN
+            target: RegFile
+            subtree:
+            - node-type: Op
+              name: GEMM

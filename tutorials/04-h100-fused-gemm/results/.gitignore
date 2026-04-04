@@ -1,0 +1,3 @@
+*
+!.gitignore
+!mnk_max_block_span_512_2048_fused_silu_compare.csv
