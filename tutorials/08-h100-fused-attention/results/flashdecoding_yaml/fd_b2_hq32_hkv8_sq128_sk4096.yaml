@@ -1,0 +1,144 @@
+problem:
+  io:
+    ins: Q, K, V
+    outs: O
+  dimensions: [M, N, A, L]
+  instance:
+    M: 8192
+    N: 128
+    A: 128
+    L: 4096
+
+  ops:
+  - name: ProduceC
+    dimensions: [M, A, L]
+    data-spaces:
+    - name: C
+      projection:
+      - [[M]]
+      - [[L]]
+      read-write: True
+    - name: Q
+      projection:
+      - [[M]]
+      - [[A]]
+    - name: K
+      projection:
+      - [[A]]
+      - [[L]]
+    ins: Q, K
+    out: C
+
+  - name: ProduceO
+    dimensions: [M, N, L]
+    data-spaces:
+    - name: O
+      projection:
+      - [[M]]
+      - [[N]]
+      read-write: True
+    - name: C
+      projection:
+      - [[M]]
+      - [[L]]
+    - name: V
+      projection:
+      - [[L]]
+      - [[N]]
+    ins: C, V
+    out: O
+
+mapping:
+  node-type: Tile
+  type: Temporal
+  factors: M=4 N=1 A=1 L=32
+  permutation: MALN
+  target: HBM
+
+  subtree:
+  - node-type: Scope
+    type: Sequential
+    subtree:
+    - node-type: Tile
+      type: Temporal
+      factors: M=1 A=1 L=1
+      permutation: MLA
+      target: L2Cache
+      subtree:
+      - node-type: Tile
+        type: Spatial
+        factors: M=16 L=2
+        permutation: ML
+        split: 1
+        target: L2Cache
+        tag: qk
+        subtree:
+        - node-type: Tile
+          type: Temporal
+          factors: M=2 A=8 L=1
+          permutation: AML
+          target: SharedMemory
+          tag: qk
+          subtree:
+          - node-type: Tile
+            type: Spatial
+            factors: M=64 L=64
+            permutation: ML
+            split: 1
+            multicast: true
+            target: SharedMemory
+            tag: qk
+            subtree:
+            - node-type: Tile
+              type: Temporal
+              factors: M=1 A=16 L=1
+              permutation: MAL
+              target: RegFile
+              tag: qk
+              subtree:
+              - node-type: Op
+                name: ProduceC
+                binding: M:M A:A L:L
+
+    - node-type: Tile
+      type: Temporal
+      factors: M=1 N=1 L=1
+      permutation: MNL
+      target: L2Cache
+      subtree:
+      - node-type: Tile
+        type: Spatial
+        factors: M=16 N=2
+        permutation: MN
+        split: 1
+        target: L2Cache
+        tag: pv
+        subtree:
+        - node-type: Tile
+          type: Temporal
+          factors: M=2 N=1 L=8
+          permutation: LMN
+          target: SharedMemory
+          tag: pv
+          subtree:
+          - node-type: Tile
+            type: Spatial
+            factors: M=64 N=64
+            permutation: MN
+            split: 1
+            multicast: true
+            target: SharedMemory
+            tag: pv
+            subtree:
+            - node-type: Tile
+              type: Temporal
+              factors: M=1 N=1 L=16
+              permutation: MNL
+              target: RegFile
+              tag: pv
+              subtree:
+              - node-type: Op
+                name: ProduceO
+                binding: M:M N:N L:L
+
+verbose: 0

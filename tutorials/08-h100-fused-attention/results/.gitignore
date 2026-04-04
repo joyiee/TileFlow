@@ -1,0 +1,15 @@
+*
+!.gitignore
+!fa2_fused_compare_tileflow.csv
+!flashdecoding_fused_compare_tileflow.csv
+!flashmla_fused_compare_tileflow.csv
+!attention_family_all_models.csv
+!attention_family_error_summary.csv
+!attention_family_best_tileflow_comparison.csv
+!attention_family_best_tileflow_summary.csv
+!fa2_yaml/
+!fa2_yaml/*.yaml
+!flashdecoding_yaml/
+!flashdecoding_yaml/*.yaml
+!flashmla_yaml/
+!flashmla_yaml/*.yaml

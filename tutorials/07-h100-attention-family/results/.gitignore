@@ -1,0 +1,5 @@
+*
+!.gitignore
+!fa2_pipeline_training_overall_max_span_compare_tileflow.csv
+!flashdecoding_overall_max_span_compare_tileflow.csv
+!flash_mla_validation_vs_sim_tileflow.csv

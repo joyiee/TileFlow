@@ -1,0 +1,10 @@
+scenario_id,scenario_title,tileflow_variant,model,mean_mape_percent,pearson_corr
+fa2,FA2,fused,TileDataflow,6.498373,0.999515
+fa2,FA2,fused,LLMCompass,122.350866,0.994273
+fa2,FA2,fused,TileFlow,104.354807,0.994273
+flashdecoding,FlashDecoding,fused,TileDataflow,2.371439,0.999178
+flashdecoding,FlashDecoding,fused,LLMCompass,133.949406,0.919485
+flashdecoding,FlashDecoding,fused,TileFlow,102.363388,0.920090
+flashmla,FlashMLA,2gemm,TileDataflow,6.093579,0.991806
+flashmla,FlashMLA,2gemm,LLMCompass,42.909777,0.742297
+flashmla,FlashMLA,2gemm,TileFlow,84.276489,0.741659
