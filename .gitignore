@@ -5,3 +5,9 @@ lib/
 *.png
 *.txt
 *.pdf
+__pycache__/
+*.pyc
+*.pyo
+.DS_Store
+.cache/
+.mpl-cache/

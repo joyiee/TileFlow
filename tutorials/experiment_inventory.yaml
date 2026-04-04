@@ -1,0 +1,132 @@
+experiments:
+  - id: h100_gemm_persistent
+    tutorial_dir: tutorials/02-h100-gemm-persistent
+    description: H100 persistent GEMM validation, LLMCompass comparison, and plotting scripts.
+    entrypoints:
+      - tutorials/02-h100-gemm-persistent/scripts/run_h100_persistent_compare.py
+      - tutorials/02-h100-gemm-persistent/scripts/plot_h100_gemm_comparison.py
+      - tutorials/02-h100-gemm-persistent/scripts/plot_h100_gemm_heatmap.py
+      - tutorials/02-h100-gemm-persistent/scripts/plot_h100_gemm_all_models.py
+    tracked_configs:
+      - tutorials/02-h100-gemm-persistent/README.md
+      - tutorials/02-h100-gemm-persistent/arch/arch.yaml
+      - tutorials/02-h100-gemm-persistent/prob/prob.yaml
+      - tutorials/02-h100-gemm-persistent/map/map.yaml
+    tracked_results:
+      - tutorials/02-h100-gemm-persistent/results/mnk_max_block_span_512_2048_2stage_compare.csv
+      - tutorials/02-h100-gemm-persistent/results/h100_gemm_llmcompass_comparison.csv
+      - tutorials/02-h100-gemm-persistent/results/h100_gemm_all_models_comparison.csv
+    ignored_generated:
+      - tutorials/02-h100-gemm-persistent/results/*.png
+    default_actual_csv: /Users/jwhuang/Code/simulator/TileDataflowAnalyticalModel/Experiment/H100/GEMM/Validation Data/Multiple_SM_BMBNBK12825664_PERSISTENT/mnk_max_block_span_512_2048_2stage.csv
+
+  - id: a100_gemm_persistent
+    tutorial_dir: tutorials/03-a100-gemm-persistent
+    description: A100 persistent GEMM validation against measured max-SM-span cycles.
+    entrypoints:
+      - tutorials/03-a100-gemm-persistent/scripts/run_a100_persistent_compare.py
+    tracked_configs:
+      - tutorials/03-a100-gemm-persistent/arch/arch.yaml
+      - tutorials/03-a100-gemm-persistent/prob/prob.yaml
+      - tutorials/03-a100-gemm-persistent/map/map.yaml
+    tracked_results:
+      - tutorials/03-a100-gemm-persistent/results/mnk_max_sm_span_512_2048_2stage_compare.csv
+    ignored_generated:
+      - tutorials/03-a100-gemm-persistent/results/raw/
+      - tutorials/03-a100-gemm-persistent/results/macro/
+    default_actual_csv: /Users/jwhuang/Code/simulator/TileDataflowAnalyticalModel/Experiment/A100/GEMM/Validation Data/Multiple_SM_BMBNBK12825664_PERSISTENT/mnk_max_sm_span_512_2048_2stage.csv
+
+  - id: h100_fused_gemm
+    tutorial_dir: tutorials/04-h100-fused-gemm
+    description: H100 GEMM plus SiLU fused in a sequential TileFlow scope.
+    entrypoints:
+      - tutorials/04-h100-fused-gemm/scripts/run_h100_fused_gemm_compare.py
+    tracked_configs:
+      - tutorials/04-h100-fused-gemm/arch/arch.yaml
+      - tutorials/04-h100-fused-gemm/prob/prob.yaml
+      - tutorials/04-h100-fused-gemm/map/map.yaml
+    tracked_results:
+      - tutorials/04-h100-fused-gemm/results/mnk_max_block_span_512_2048_fused_silu_compare.csv
+    ignored_generated:
+      - tutorials/04-h100-fused-gemm/results/raw/
+      - tutorials/04-h100-fused-gemm/results/macro/
+    default_actual_csv: /Users/jwhuang/Code/simulator/TileDataflowAnalyticalModel/Experiment/H100/Fused GEMM/Validation Data/mnk_max_block_span_512_2048_fused_silu.csv
+
+  - id: h100_fp8_gemm
+    tutorial_dir: tutorials/05-h100-fp8-gemm
+    description: H100 FP8 GEMM validation with enlarged TileFlow mesh for larger N tiling.
+    entrypoints:
+      - tutorials/05-h100-fp8-gemm/scripts/run_h100_fp8_gemm_compare.py
+    tracked_configs:
+      - tutorials/05-h100-fp8-gemm/arch/arch.yaml
+      - tutorials/05-h100-fp8-gemm/prob/prob.yaml
+      - tutorials/05-h100-fp8-gemm/map/map.yaml
+    tracked_results:
+      - tutorials/05-h100-fp8-gemm/results/fp8_bmbn128_overall_max_span_compare.csv
+    ignored_generated:
+      - tutorials/05-h100-fp8-gemm/results/raw/
+      - tutorials/05-h100-fp8-gemm/results/macro/
+    default_actual_csv: /Users/jwhuang/Code/simulator/TileDataflowAnalyticalModel/Experiment/H100/Mixed Precision GEMM/Validation Data/fp8_bmbn128_overall_max_span_512_2048.csv
+
+  - id: all_models_comparison
+    tutorial_dir: tutorials/06-all-models-comparison
+    description: Aggregate comparison across actual measurements, TileDataflow, LLMCompass, and TileFlow tutorials.
+    entrypoints:
+      - tutorials/06-all-models-comparison/scripts/build_all_model_comparison.py
+    tracked_results:
+      - tutorials/06-all-models-comparison/results/all_model_cycle_comparison.csv
+      - tutorials/06-all-models-comparison/results/all_model_error_summary.csv
+    ignored_generated:
+      - tutorials/06-all-models-comparison/results/*.png
+
+  - id: h100_attention_family_2gemm
+    tutorial_dir: tutorials/07-h100-attention-family
+    description: Attention-family proxy experiments modeled as QK GEMM plus PV GEMM.
+    entrypoints:
+      - tutorials/07-h100-attention-family/scripts/run_fa2_compare.py
+      - tutorials/07-h100-attention-family/scripts/run_flashdecoding_compare.py
+      - tutorials/07-h100-attention-family/scripts/run_flashmla_compare.py
+    tracked_configs:
+      - tutorials/07-h100-attention-family/arch/arch.yaml
+      - tutorials/07-h100-attention-family/prob/prob.yaml
+      - tutorials/07-h100-attention-family/map/map.yaml
+      - tutorials/07-h100-attention-family/scripts/common.py
+    tracked_results:
+      - tutorials/07-h100-attention-family/results/fa2_pipeline_training_overall_max_span_compare_tileflow.csv
+      - tutorials/07-h100-attention-family/results/flashdecoding_overall_max_span_compare_tileflow.csv
+      - tutorials/07-h100-attention-family/results/flash_mla_validation_vs_sim_tileflow.csv
+    ignored_generated:
+      - tutorials/07-h100-attention-family/results/fa2_raw/
+      - tutorials/07-h100-attention-family/results/fa2_macro/
+      - tutorials/07-h100-attention-family/results/flashdecoding_raw/
+      - tutorials/07-h100-attention-family/results/flashdecoding_macro/
+      - tutorials/07-h100-attention-family/results/flashmla_raw/
+      - tutorials/07-h100-attention-family/results/flashmla_macro/
+
+  - id: h100_fused_attention
+    tutorial_dir: tutorials/08-h100-fused-attention
+    description: Attention-family fused TileFlow cases with generated per-workload YAMLs and merged comparison CSVs.
+    entrypoints:
+      - tutorials/08-h100-fused-attention/scripts/run_fused_attention_compare.py
+      - tutorials/08-h100-fused-attention/scripts/build_attention_family_comparison.py
+      - tutorials/08-h100-fused-attention/scripts/build_attention_family_best_tileflow.py
+      - tutorials/08-h100-fused-attention/scripts/plot_attention_three_sections_best.py
+    tracked_configs:
+      - tutorials/08-h100-fused-attention/results/fa2_yaml/
+      - tutorials/08-h100-fused-attention/results/flashdecoding_yaml/
+      - tutorials/08-h100-fused-attention/results/flashmla_yaml/
+    tracked_results:
+      - tutorials/08-h100-fused-attention/results/fa2_fused_compare_tileflow.csv
+      - tutorials/08-h100-fused-attention/results/flashdecoding_fused_compare_tileflow.csv
+      - tutorials/08-h100-fused-attention/results/flashmla_fused_compare_tileflow.csv
+      - tutorials/08-h100-fused-attention/results/attention_family_all_models.csv
+      - tutorials/08-h100-fused-attention/results/attention_family_error_summary.csv
+      - tutorials/08-h100-fused-attention/results/attention_family_best_tileflow_comparison.csv
+      - tutorials/08-h100-fused-attention/results/attention_family_best_tileflow_summary.csv
+    ignored_generated:
+      - tutorials/08-h100-fused-attention/results/fa2_raw/
+      - tutorials/08-h100-fused-attention/results/flashdecoding_raw/
+      - tutorials/08-h100-fused-attention/results/flashmla_raw/
+      - tutorials/08-h100-fused-attention/results/.cache/
+      - tutorials/08-h100-fused-attention/results/.mpl-cache/
+      - tutorials/08-h100-fused-attention/results/*_limit.csv
