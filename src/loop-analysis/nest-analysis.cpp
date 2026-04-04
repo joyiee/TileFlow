@@ -236,7 +236,7 @@ namespace analysis
                         std::cerr);
                 }
                 std::transform(cur_scale.begin(), cur_scale.end(), cur_scale_.begin(),
-                               cur_scale.begin(), [this, node, child](uint64_t x, uint64_t y)
+                               cur_scale.begin(), [](uint64_t x, uint64_t y)
                                {
                         assert(1 == x || 1 == y || x == y);
                         return std::max(x,y); });
@@ -696,10 +696,6 @@ namespace analysis
                 cycle += ret_val.cycle_;
             }
 
-            int all_iter = 1;
-            for (auto lc: loop_counts) all_iter *= lc;
-
-            int real_iter = 1;
             /**
              * delta = (00001)
              *          (0009) -> (0010)
@@ -719,7 +715,6 @@ namespace analysis
                 input.num_epochs_ = num_epochs_ * (trip_counts[i+1] - trip_counts[i]);
                 input.cur_transform_ = input_.cur_transform_;
                 input.cur_transform_[dims[i]] += scales[i];
-                real_iter += input.num_epochs_;
                 ret_val = dm_.computeDelta(input);  
                 // std::cout << "<" << input_.curr_node_->get_storage_name() << "::"
                 //      << problem::GetShape()->FlattenedDimensionIDToName.at(nest_state_[i].descriptor.dimension)
@@ -1296,4 +1291,3 @@ namespace analysis
  * ReadWrite 
  * 
 */
-

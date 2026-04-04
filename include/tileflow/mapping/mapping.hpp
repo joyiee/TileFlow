@@ -121,7 +121,7 @@ public:
     };
     ScopeNode(config::CompoundConfigNode config);
     void display(std::string prefix, bool recursive, const SymbolTable* = nullptr, std::ostream& = std::cout) const override;
-    void accept(Visitor* visitor) const {visitor->visitScope(this);}
+    void accept(Visitor* visitor) const override {visitor->visitScope(this);}
     ScopeNode::type_t get_scope_type() const {return type;}
 
 private: 
@@ -145,7 +145,7 @@ private:
 public:
     TileNode(config::CompoundConfigNode config);
     void display(std::string prefix, bool recursive, const SymbolTable* = nullptr, std::ostream& = std::cout) const override;
-    void accept(Visitor* visitor) const {visitor->visitTile(this);}
+    void accept(Visitor* visitor) const override {visitor->visitTile(this);}
     bool is_spatial() const {return type_ == Spatial;}
     bool is_multicast_enabled() const {return multicast_enabled_;}
     TileNode::type_t get_tile_type() const {return type_;}
@@ -157,13 +157,12 @@ public:
 
 class OpNode: public Node {
     std::string op_name_;
-    int op_index_;
     std::shared_ptr<problem::TileFlow::Workload> p_workload;
 public:
     OpNode(config::CompoundConfigNode config);
     void display(std::string prefix, bool recursive, const SymbolTable* = nullptr, std::ostream& = std::cout) const override;
     const std::string & get_name() const {return op_name_;}
-    void accept(Visitor* visitor) const {visitor->visitOp(this);}
+    void accept(Visitor* visitor) const override {visitor->visitOp(this);}
     const std::shared_ptr<problem::TileFlow::Workload>& get_workload() const {return p_workload;}
 };
 

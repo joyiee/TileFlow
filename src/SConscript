@@ -21,10 +21,7 @@ else:
   env.Append(CCFLAGS = ['-fmax-errors=1'])
 
 env.Append(LIBPATH = ['.', os.path.join(env['BUILD_BASE_DIR'], '3rdparty/timeloop/lib')])
-# If we are doing a static build, the timeloop library must be the first
-# item in the link order.
-if GetOption('link_static'):
-    env.Append(LIBS = ['tileflow', 'timeloop-mapper'])
+env.Append(LIBS = ['timeloop-model', 'timeloop-mapper'])
 
 env.Append(LINKFLAGS = ['-std=c++17', '-pthread'])
 if str(Platform()) != 'darwin':
@@ -118,6 +115,9 @@ model_sources = Split("""
 ./application/main.cpp
 """)
 
-bin_model = env.Program(target = 'tileflow', source = model_sources) 
+binenv = env.Clone()
+binenv.Append(LIBS = ['tileflow'])
+
+bin_model = binenv.Program(target = 'tileflow', source = model_sources) 
 
 env.Install("bin", [bin_model])

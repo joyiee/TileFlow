@@ -255,6 +255,9 @@ namespace TileFlow {
         DatamovementCalculator& dm_;
         const InputParam input_;
         NodeConfig& config_;
+        using analysis::NestAnalysis::ComputeTemporalWorkingSet;
+        using analysis::NestAnalysis::ComputeSpatialWorkingSet;
+        using analysis::NestAnalysis::FillSpatialDeltas;
         RetVal ComputeTemporalWorkingSet();
         RetVal ComputeSpatialWorkingSet();
         int SimulateTemporalExecution(

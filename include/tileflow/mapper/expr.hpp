@@ -100,6 +100,7 @@ namespace TileFlow {
         virtual num_t eval(const SymbolTable&) = 0;
         virtual void display(const SymbolTable&, std::ostream& = std::cout) = 0;
         virtual void accept(ExprVisitor*) const = 0;
+        virtual ~Expr() = default;
     };
 
     struct ResourceExpr: public Expr {
@@ -107,7 +108,7 @@ namespace TileFlow {
         virtual void display(const SymbolTable&, std::ostream&) override {}
         // given y's limit, compute minimum required x
         virtual std::pair<int, int> eval_pair(const SymbolTable& symb_table, int limit_y) = 0;
-        virtual void accept(ExprVisitor* visitor) const = 0;
+        virtual void accept(ExprVisitor* visitor) const override = 0;
     };
 
     struct PairExpr: public ResourceExpr {

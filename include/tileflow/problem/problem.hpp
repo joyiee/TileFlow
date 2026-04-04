@@ -17,8 +17,8 @@ namespace TileFlow {
         std::vector<std::string> ins_;
         std::string out_;
         std::string name_;  
-        Workloads& workloads_;
-        bool binding_applied = false;
+        [[maybe_unused]] Workloads& workloads_;
+        [[maybe_unused]] bool binding_applied = false;
     public: 
         Workload(Workloads& workloads): workloads_(workloads){}
         inline void set_name(const std::string & name){name_ = name;}

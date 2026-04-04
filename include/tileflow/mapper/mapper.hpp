@@ -166,7 +166,7 @@ struct Algorithm {
         RANDOM
     };
 protected: 
-    unsigned timeout_;
+    [[maybe_unused]] unsigned timeout_;
     std::chrono::steady_clock::time_point begin_;
     std::vector<log_t> logs_;
     Env* env_ = nullptr;
@@ -177,6 +177,7 @@ protected:
     }
 public:
     Algorithm(unsigned timeout = 120): timeout_(timeout) {}
+    virtual ~Algorithm() = default;
     void report_csv(std::ostream& o) const;
     virtual void set_env(Env* env) {env_ = env;}
     virtual void search() = 0;
@@ -197,7 +198,7 @@ public:
     MCTS(unsigned timeout = 120, bool random = false): 
         Algorithm(timeout), random_(random){}
     void search() override;
-    void set_env(Env* env){env_ = env;}
+    void set_env(Env* env) override {env_ = env;}
 };
 
 class Mapper {
@@ -209,7 +210,7 @@ class Mapper {
     SymbolTable optimum_;
     Objective obj_;
     std::unique_ptr<Algorithm> alg_;
-    unsigned timeout_;
+    [[maybe_unused]] unsigned timeout_;
     unsigned topk_;
     void report_csv(std::ostream&);
     void report_mapping(std::ostream&);

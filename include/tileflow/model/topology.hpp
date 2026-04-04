@@ -25,7 +25,7 @@ class StatCalculator: public mapping::TileFlow::Visitor {
     std::stack<std::uint64_t> cycles_;
     double energy_;
     model::TileFlow::Topology& topology_;
-    const mapping::TileFlow::Mapping& mapping_;
+    [[maybe_unused]] const mapping::TileFlow::Mapping& mapping_;
     const analysis::TileFlow::NestAnalysis& analysis_;
 public: 
     StatCalculator(model::TileFlow::Topology& topology, 
