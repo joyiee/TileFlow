@@ -69,6 +69,11 @@ def run_tileflow(tileflow_bin, arch_path, mapping_path, out_dir):
 
 
 def write_case_yaml(path, m, n, a, l, mo, ao, lo, ait, nit, title):
+    # Keep the shared M/L tile outside the op-specific subtrees so each L-tile
+    # can be produced by QK and immediately consumed by PV.
+    qk_a_tile = ao * ait
+    pv_l_tile = 4
+    pv_n_tile = 2 * nit
     text = f"""problem:
   io:
     ins: Q, K, V
@@ -122,34 +127,35 @@ def write_case_yaml(path, m, n, a, l, mo, ao, lo, ait, nit, title):
 mapping:
   node-type: Tile
   type: Temporal
-  factors: M={mo} N=1 A={ao} L={lo}
-  permutation: MALN
+  factors: M={mo} N=1 A=1 L={lo}
+  permutation: MLAN
   target: HBM
 
   subtree:
-  - node-type: Scope
-    type: Sequential
+  - node-type: Tile
+    type: Temporal
+    factors: M=1 L=1
+    permutation: ML
+    target: L2Cache
     subtree:
     - node-type: Tile
-      type: Temporal
-      factors: M=1 A=1 L=1
-      permutation: MLA
+      type: Spatial
+      factors: M=16 L=2
+      permutation: ML
+      split: 1
       target: L2Cache
       subtree:
-      - node-type: Tile
-        type: Spatial
-        factors: M=16 L=2
-        permutation: ML
-        split: 1
-        target: L2Cache
-        tag: qk
+      - node-type: Scope
+        type: Sequential
         subtree:
         - node-type: Tile
           type: Temporal
-          factors: M=2 A={ait} L=1
+          factors: M=2 A={qk_a_tile} L=1
           permutation: AML
           target: SharedMemory
           tag: qk
+          profile: False
+          bypass: [C]
           subtree:
           - node-type: Tile
             type: Spatial
@@ -167,30 +173,18 @@ mapping:
               target: RegFile
               tag: qk
               subtree:
-              - node-type: Op
-                name: ProduceC
-                binding: M:M A:A L:L
+                - node-type: Op
+                  name: ProduceC
+                  binding: M:M A:A L:L
 
-    - node-type: Tile
-      type: Temporal
-      factors: M=1 N=1 L=1
-      permutation: MNL
-      target: L2Cache
-      subtree:
-      - node-type: Tile
-        type: Spatial
-        factors: M=16 N=2
-        permutation: MN
-        split: 1
-        target: L2Cache
-        tag: pv
-        subtree:
         - node-type: Tile
           type: Temporal
-          factors: M=2 N={nit} L=8
+          factors: M=2 N={pv_n_tile} L={pv_l_tile}
           permutation: LMN
           target: SharedMemory
           tag: pv
+          profile: False
+          bypass: [C]
           subtree:
           - node-type: Tile
             type: Spatial

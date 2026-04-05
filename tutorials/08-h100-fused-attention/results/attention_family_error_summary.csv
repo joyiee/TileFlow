@@ -2,12 +2,12 @@ scenario_id,scenario_title,model,mean_mape_percent,median_mape_percent,max_mape_
 fa2,FA2,TileDataflow,6.498373,7.166339,13.813414,0.999515
 fa2,FA2,LLMCompass,122.350866,130.282337,208.291956,0.994273
 fa2,FA2,TileFlow-2GEMM,163.643355,176.596805,268.912405,0.994294
-fa2,FA2,TileFlow-Fused,104.354807,108.467389,179.080186,0.994273
+fa2,FA2,TileFlow-Fused,71.109085,69.122337,123.262786,0.994273
 flashdecoding,FlashDecoding,TileDataflow,2.371439,2.664464,4.276795,0.999178
 flashdecoding,FlashDecoding,LLMCompass,133.949406,120.646757,284.320049,0.919485
 flashdecoding,FlashDecoding,TileFlow-2GEMM,152.830665,140.693031,322.198951,0.919827
-flashdecoding,FlashDecoding,TileFlow-Fused,102.363388,81.822804,220.694962,0.920090
+flashdecoding,FlashDecoding,TileFlow-Fused,72.788402,60.826788,156.555578,0.920090
 flashmla,FlashMLA,TileDataflow,6.093579,4.373111,11.101213,0.991806
 flashmla,FlashMLA,LLMCompass,42.909777,37.202112,70.041933,0.742297
 flashmla,FlashMLA,TileFlow-2GEMM,84.276489,46.549104,206.709518,0.741659
-flashmla,FlashMLA,TileFlow-Fused,101.333023,67.929207,252.411390,0.742297
+flashmla,FlashMLA,TileFlow-Fused,47.138515,51.981863,99.699585,0.742297

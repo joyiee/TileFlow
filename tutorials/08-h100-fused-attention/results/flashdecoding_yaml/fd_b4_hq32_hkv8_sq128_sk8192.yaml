@@ -52,26 +52,25 @@ mapping:
   node-type: Tile
   type: Temporal
   factors: M=8 N=1 A=1 L=64
-  permutation: MALN
+  permutation: MLAN
   target: HBM
 
   subtree:
-  - node-type: Scope
-    type: Sequential
+  - node-type: Tile
+    type: Temporal
+    factors: M=1 L=1
+    permutation: ML
+    target: L2Cache
     subtree:
     - node-type: Tile
-      type: Temporal
-      factors: M=1 A=1 L=1
-      permutation: MLA
+      type: Spatial
+      factors: M=16 L=2
+      permutation: ML
+      split: 1
       target: L2Cache
       subtree:
-      - node-type: Tile
-        type: Spatial
-        factors: M=16 L=2
-        permutation: ML
-        split: 1
-        target: L2Cache
-        tag: qk
+      - node-type: Scope
+        type: Sequential
         subtree:
         - node-type: Tile
           type: Temporal
@@ -79,6 +78,8 @@ mapping:
           permutation: AML
           target: SharedMemory
           tag: qk
+          profile: False
+          bypass: [C]
           subtree:
           - node-type: Tile
             type: Spatial
@@ -96,30 +97,18 @@ mapping:
               target: RegFile
               tag: qk
               subtree:
-              - node-type: Op
-                name: ProduceC
-                binding: M:M A:A L:L
+                - node-type: Op
+                  name: ProduceC
+                  binding: M:M A:A L:L
 
-    - node-type: Tile
-      type: Temporal
-      factors: M=1 N=1 L=1
-      permutation: MNL
-      target: L2Cache
-      subtree:
-      - node-type: Tile
-        type: Spatial
-        factors: M=16 N=2
-        permutation: MN
-        split: 1
-        target: L2Cache
-        tag: pv
-        subtree:
         - node-type: Tile
           type: Temporal
-          factors: M=2 N=1 L=8
+          factors: M=2 N=2 L=4
           permutation: LMN
           target: SharedMemory
           tag: pv
+          profile: False
+          bypass: [C]
           subtree:
           - node-type: Tile
             type: Spatial
