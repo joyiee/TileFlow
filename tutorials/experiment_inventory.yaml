@@ -38,10 +38,11 @@ experiments:
 
   - id: h100_fused_gemm
     tutorial_dir: tutorials/04-h100-fused-gemm
-    description: H100 GEMM plus SiLU fused in a sequential TileFlow scope.
+    description: H100 GEMM plus pointwise SiLU epilogue proxy fused in a sequential TileFlow scope.
     entrypoints:
       - tutorials/04-h100-fused-gemm/scripts/run_h100_fused_gemm_compare.py
     tracked_configs:
+      - tutorials/04-h100-fused-gemm/README.md
       - tutorials/04-h100-fused-gemm/arch/arch.yaml
       - tutorials/04-h100-fused-gemm/prob/prob.yaml
       - tutorials/04-h100-fused-gemm/map/map.yaml
